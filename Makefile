@@ -1,10 +1,10 @@
 APP=$(shell basename $(shell git remote get-url origin) | tr '[:upper:]' '[:lower:]')
 REGISTRY=ghcr.io/stassweepy
-DOCKERHUB_REGISTRY_USERNAME = $(DOCKERHUB_USERNAME)
-DOCKERHUB_REGISTRY_TOKEN = $(DOCKERHUB_TOKEN)
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 TARGETOS=linux
 TARGETARCH=amd64
+
+DOCKER_LOGIN_CMD = docker login -u $(DOCKERHUB_USERNAME) --password-stdin
 
 linux:
 	$(MAKE) image TARGETOS=linux TARGETARCH=${TARGETARCH}
@@ -34,7 +34,7 @@ image:
 	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH} --build-arg=TARGETOS=${TARGETOS} --build-arg=TARGETARCH=${TARGETARCH}
 
 push:
-	docker login -u $(DOCKERHUB_REGISTRY_USERNAME) -p $(DOCKERHUB_REGISTRY_TOKEN)
+	echo "$(DOCKERHUB_REGISTRY_TOKEN)" | $(DOCKER_LOGIN_CMD)
 	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH}
 
 clean:
