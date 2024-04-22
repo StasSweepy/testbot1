@@ -4,7 +4,7 @@ VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HE
 TARGETOS=linux
 TARGETARCH=amd64
 
-DOCKER_LOGIN_CMD = echo "$(DOCKERHUB_REGISTRY_TOKEN)" | docker login -u $(DOCKERHUB_USERNAME) --password-stdin
+DOCKER_LOGIN_CMD = echo "$(DOCKERHUB_REGISTRY_TOKEN)" | docker login -u $(DOCKERHUB_USERNAME)
 
 linux:
 	$(MAKE) image TARGETOS=linux TARGETARCH=${TARGETARCH}
