@@ -15,12 +15,13 @@ jobs:
 
       - name: Run test
         run: make test
-      
-      - name: Build & Push
+      - name: Docker Hub login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build&Push
         env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           APP: "testbot1"
           REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
-        run: |
-          make DOCKERHUB_USERNAME="${DOCKERHUB_USERNAME}" DOCKERHUB_TOKEN="${DOCKERHUB_TOKEN}" image push
+        run: make image push
