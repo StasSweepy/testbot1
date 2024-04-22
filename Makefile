@@ -4,7 +4,7 @@ VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HE
 TARGETOS=linux
 TARGETARCH=amd64
 
-DOCKER_LOGIN_CMD = docker login -u $(DOCKERHUB_USERNAME) --password-stdin
+DOCKER_LOGIN_CMD = echo "$(DOCKERHUB_REGISTRY_TOKEN)" | docker login -u $(DOCKERHUB_USERNAME) --password-stdin
 
 linux:
 	$(MAKE) image TARGETOS=linux TARGETARCH=${TARGETARCH}
@@ -34,7 +34,7 @@ image:
 	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH} --build-arg=TARGETOS=${TARGETOS} --build-arg=TARGETARCH=${TARGETARCH}
 
 push:
-	echo "$(DOCKERHUB_REGISTRY_TOKEN)" | $(DOCKER_LOGIN_CMD)
+	$(DOCKER_LOGIN_CMD)
 	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH}
 
 clean:
