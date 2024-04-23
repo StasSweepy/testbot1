@@ -6,10 +6,9 @@ replicaCount: 1
 image:
   repository: StasSweepy
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1.0.7-e3a98fa"
+  tag: "v1.0.7-e8e9e0b"
   arch: amd64
   os: linux
-  
 secret:
   name: "testbot1"
   env: "token"
