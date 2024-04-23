@@ -1,9 +1,11 @@
-APP=$(shell basename $(shell git remote get-url origin) | tr '[:upper:]' '[:lower:]')
+APP=$(shell basename $(shell git remote get-url origin))
 #REGISTRY=stassweepy
 REGISTRY=ghcr.io/stassweepy
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 TARGETOS=linux# darwin windows
 TARGETARCH=amd64# amd64 arm64
+
+IMAGE_TAG=$(shell echo ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH} | tr A-Z a-z)
 
 linux:
 	$(MAKE) image TARGETOS=linux TARGETARCH=${TARGETARCH}
@@ -33,7 +35,7 @@ image:
 	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH} --build-arg=TARGETOS=${TARGETOS} --build-arg=TARGETARCH=${TARGETARCH}
 
 push:
-	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH}
+	docker push ${IMAGE_TAG}
 
 clean:
 	rm -rf bot
