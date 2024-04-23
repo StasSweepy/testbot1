@@ -15,15 +15,19 @@ jobs:
 
       - name: Run test
         run: make test
+
       - name: Docker Hub login
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build&Push
         env:
           APP: "testbot1"
-          REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
+          REGISTRY: ghcr.io/${{github.actor}}
+          TARGETARCH: "amd64"
+          TARGETOS: "linux"
         run: make image push
   cd:
     name: CD
@@ -31,10 +35,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    
     - run: echo "VERSION=$(git describe --tags --abbrev=0)-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - uses: mikefarah/yq@master
