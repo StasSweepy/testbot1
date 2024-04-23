@@ -19,6 +19,7 @@ jobs:
       - name: Docker Hub login
         uses: docker/login-action@v3
         with:
+          registry: ghcr.io
           username: ${{github.actor}}
           password: ${{secrets.TESTBOT1_GITHUB_TOKEN}}
 
