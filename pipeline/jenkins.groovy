@@ -9,7 +9,7 @@ pipeline {
     environment {
         REPO = 'https://github.com/StasSweepy/testbot1'
         GITHUB = credentials('github')
-        BRANCH = 'jenkins'
+        BRANCH = 'main'
         TARGETARCH = "${params.ARCH}"
         TARGETOS = "${params.OS}"
     }
