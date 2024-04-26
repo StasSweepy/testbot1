@@ -9,6 +9,7 @@ pipeline {
     environment {
         REPO = 'https://github.com/StasSweepy/testbot1'
         GITHUB = credentials('github')
+        BRANCH = 'jenkins'
         TARGETARCH = "${params.ARCH}"
         TARGETOS = "${params.OS}"
     }
@@ -17,7 +18,7 @@ pipeline {
         stage('clone') {
             steps {
                 echo 'Clone Repository'
-                git url: "${REPO}"
+                git branch: "${BRANCH}", url: "${REPO}"
             }
         }
 
