@@ -15,6 +15,12 @@ pipeline {
     }
 
     stages {
+        stage('Install Make') {
+            steps {
+                sh 'sudo apt-get update && sudo apt-get install -y make'
+            }
+        }
+
         stage('clone') {
             steps {
                 echo 'Clone Repository'
